@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'data.dart';
 import 'widgets.dart';
+import 'rewards.dart';
 
 class JourneyView extends StatefulWidget {
   final Widget Function(BuildContext, Journey, Future<void> Function()) builder;
@@ -92,8 +93,8 @@ class HomePage extends StatelessWidget {
         onRegion: (order) => context.go('/region/$order'),
         onContinue: () => context.go(
           data.nextMission == null
-            ? '/achievements'
-            : '/region/${current.order}',
+              ? '/achievements'
+              : '/region/${current.order}',
         ),
         onPassport: () => context.go('/achievements'),
         current: current,
@@ -646,7 +647,7 @@ class _MissionPageState extends State<MissionPage> {
                   const SizedBox(height: 12),
                   Text(
                     badges.isNotEmpty
-                        ? '${badges.length} nova(s) conquista(s) para sua coleção!'
+                        ? '${badges.length} nova(s) conquista(s)! Visuais de perfil e cards extras liberados em Conquistas.'
                         : 'Sua descoberta foi salva no diário.',
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: muted, height: 1.5),
@@ -992,6 +993,8 @@ class AchievementsPage extends StatelessWidget {
           'Cada região completa vira um carimbo. Cada descoberta vira bagagem.',
         ),
         _PassportCollection(data: data),
+        const SizedBox(height: 24),
+        RewardsCollection(data: data, reload: reload),
         const SizedBox(height: 28),
         SectionTitle(
           'Conquistas da viagem',
@@ -1294,11 +1297,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           child: Column(
             children: [
-              const CircleAvatar(
-                radius: 43,
-                backgroundColor: sun,
-                child: Icon(Icons.face_rounded, size: 62, color: forest),
-              ),
+              RewardAvatar(data: data),
               const SizedBox(height: 16),
               Text(
                 '${data.profile['nickname']}',
@@ -1358,6 +1357,8 @@ class _ProfilePageState extends State<ProfilePage> {
           onPressed: () => context.go('/achievements'),
           icon: Icons.menu_book_rounded,
         ),
+        const SizedBox(height: 22),
+        RewardsCollection(data: data, reload: reload),
         const SizedBox(height: 22),
         const SectionTitle(
           'Meu diário',

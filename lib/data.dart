@@ -73,6 +73,7 @@ const regions = [
 ];
 
 class Journey {
+  final List<BrasisRecord> rewards;
   final BrasisRecord profile;
   final List<BrasisRecord> missions, progress, achievements, unlocked, ranking;
   Journey(
@@ -81,8 +82,9 @@ class Journey {
     this.progress,
     this.achievements,
     this.unlocked,
-    this.ranking,
-  );
+    this.ranking, {
+    this.rewards = const [],
+  });
   int get points => (profile['points'] as num).toInt();
   int get completed =>
       missions.where((m) => status(m['id'] as int) == 'completed').length;
@@ -107,10 +109,9 @@ class Journey {
   );
   BrasisRecord? get nextMission {
     final pending = inRegion(currentRegion.order)
-      .where((m) => status(m['id'] as int) != 'completed')
-      .toList()
-    ..sort((a, b) => missionSequence(a).compareTo(missionSequence(b)));
-
+        .where((m) => status(m['id'] as int) != 'completed')
+        .toList()
+      ..sort((a, b) => missionSequence(a).compareTo(missionSequence(b)));
     return pending.firstOrNull;
   }
   String status(int id) =>
@@ -147,6 +148,7 @@ class BrasisRepository {
       client.from('achievements').select().eq('active', true).order('target'),
       client.from('user_achievements').select().eq('user_id', uid),
       client.rpc('leaderboard'),
+      client.from('cultural_rewards').select(),
     ]);
     List<BrasisRecord> rows(int i) => (results[i] as List)
         .map((r) => Map<String, dynamic>.from(r as Map))
@@ -158,6 +160,7 @@ class BrasisRepository {
       rows(3),
       rows(4),
       rows(5),
+      rewards: rows(6),
     );
   }
 
@@ -205,5 +208,5 @@ String friendlyError(Object error) {
   if (error is PostgrestException && error.code == 'P0001') {
     return error.message;
   }
-  return 'Ops! A conexão deu uma pausa. Confira a internet e tente novamente. Se o erro continuar, confira se executou o SQL da versão cultural.';
+  return 'Não foi possível carregar a viagem. Confira sua conexão e se executou schema.sql e recompensas.sql no Supabase.';
 }
