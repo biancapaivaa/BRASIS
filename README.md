@@ -1,42 +1,9 @@
 # BRASIS · Uma jornada de histórias e culturas
 
-**Versão cultural 2.0.** Uma aventura virtual pelas cinco regiões brasileiras.
+Uma aventura virtual pelas cinco regiões brasileiras.
 As missões são sobre música, dança, festas, literatura, arquitetura, culinária e saberes.
 A estética é de jogo de viagem: ilustrações vetoriais próprias, tipografia Nunito,
 botões com relevo, roteiro de capítulos, carimbos e passaporte de conquistas.
-
-## Atualizando o projeto que você já abriu
-
-1. Pare o aplicativo antigo com `Ctrl + C` no terminal.
-2. Extraia este ZIP em uma pasta nova. Abra a pasta `brasis`, que contém `pubspec.yaml`, no VS Code.
-3. Copie seu **config.json** do projeto anterior para essa nova pasta. Não envie chaves secretas.
-4. No **mesmo projeto Supabase**, abra **SQL Editor → New query**, cole TODO o novo
-   `supabase/schema.sql` e clique em **Run**. Esse arquivo funciona tanto em banco novo
-   quanto na versão anterior; pode ser executado novamente.
-5. No terminal, dentro da nova pasta `brasis`, execute:
-
-```powershell
-flutter pub get
-```
-
-Depois:
-
-```powershell
-flutter run -d chrome --web-port=3000 --dart-define-from-file=config.json
-```
-
-**Não precisa executar `flutter create`: a pasta `web` já está pronta.**
-Se não tiver `config.json`, copie `config.example.json` com outro nome e preencha a URL
-Supabase e a chave pública publishable/anon. A chave `service_role` ou secret não deve ir no app.
-Não precisa de Python, ponte MQTT, novo projeto Supabase nem reinstalar o Flutter.
-
-### O que acontece com a versão anterior
-- Contas, apelidos, e-mails e sessões continuam funcionando.
-- As missões anteriores ficam inativas e saem do aplicativo.
-- O histórico anterior não é apagado. A pontuação anterior fica guardada em `profiles.legacy_points`.
-- Os pontos exibidos no app e no ranking passam a contar **somente a nova jornada cultural**.
-- Conquistas antigas são arquivadas; as seis conquistas culturais são desbloqueadas no novo roteiro.
-- Se executar o SQL novamente depois de jogar, o progresso cultural é preservado e os pontos são reconciliados.
 
 ## Como jogar
 
